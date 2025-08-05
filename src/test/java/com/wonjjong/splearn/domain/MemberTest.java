@@ -1,37 +1,42 @@
 package com.wonjjong.splearn.domain;
 
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberTest {
-    @Test
-    void createMember() {
-        var member = new Member("won.dev@splearn.app", "wonjjong", "passwordHash");
+    PasswordEncoder passwordEncoder;
+    Member member;
 
-        assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
+    @BeforeEach
+    void setUp() {
+        passwordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(String password) {
+                return password + "Encoded";
+            }
+
+            @Override
+            public boolean matches(String password, String passwordHash) {
+                return (password + "Encoded").equals(passwordHash);
+            }
+        };
+
+        member = Member.create(new MemberCreateRequest("won.dev@splearn.app", "wonjjong", "password"), passwordEncoder);
     }
 
     @Test
-    @DisplayName("constructor null check")
-    public void constructorNullCheck(){
-        //given
-        assertThatThrownBy(() -> new Member(null, null, null))
-                .isInstanceOf(NullPointerException.class);
-
-        //when
-
-        //then
+    void createMember() {
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
     }
 
     @Test
     @DisplayName("activate")
     void activate() {
         //given
-        Member member = new Member("won.dev", "won.dev", "secret");
 
         //when
         member.activate();
@@ -44,7 +49,6 @@ class MemberTest {
     @DisplayName("activate fail")
     void activateFail() {
         //given
-        Member member = new Member("won.dev", "won.dev", "secret");
 
         //when
         member.activate();
@@ -58,7 +62,6 @@ class MemberTest {
     @DisplayName("deactivate")
     void deactivate() {
         //given
-        Member member = new Member("won.dev", "won.dev","secret");
         member.activate();
 
         //when
@@ -72,7 +75,6 @@ class MemberTest {
     @DisplayName("deactivate fail")
     void deactivateFail() {
         //given
-        Member member = new Member("won.dev", "won.dev", "secret");
 
         //when
         assertThatThrownBy(member::deactivate).isInstanceOf(IllegalStateException.class);
@@ -81,6 +83,75 @@ class MemberTest {
 
         //then
         assertThatThrownBy(member::deactivate).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("verify password")
+    void verifyPassword() {
+        //given
+
+        //when
+
+        //then
+        assertThat(member.verifyPassword("password", passwordEncoder)).isEqualTo(true);
+        assertThat(member.verifyPassword("hello", passwordEncoder)).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("change nickname")
+    void changeNickname() {
+        //given
+
+        //when
+
+        //then
+        assertThat(member.getNickname()).isEqualTo("wonjjong");
+        member.changeNickname("bomi");
+        assertThat(member.getNickname()).isEqualTo("bomi");
+
+    }
+
+    @Test
+    @DisplayName("change password")
+    void changePassword() {
+        //given
+
+
+        //when
+        member.changePassword("newPassword", passwordEncoder);
+
+        //then
+        assertThat(member.verifyPassword("newPassword", passwordEncoder)).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("should be active")
+    void shouldBeActive() {
+        //given
+        assertThat(member.isActive()).isFalse();
+
+        //when
+        member.activate();
+        assertThat(member.isActive()).isTrue();
+
+        member.deactivate();
+        assertThat(member.isActive()).isFalse();
+
+        //then
+    }
+
+    @Test
+    @DisplayName("invalid email")
+    void invalieEmail() {
+        //given
+        assertThatThrownBy(() ->
+                Member.create(new MemberCreateRequest("invalid email", "wonjjong", "password"), passwordEncoder)
+        ).isInstanceOf(IllegalArgumentException.class);
+
+        Member.create(new MemberCreateRequest("wonjjong.dev@gmail.com", "wonjjong", "password"), passwordEncoder);
+        //when
+
+        //then
     }
 
 }
