@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://www.hibernate.org/xsd/orm/mapping"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://www.hibernate.org/xsd/orm/mapping
+                                            https://hibernate.org/xsd/orm/mapping/mapping-3.1.0.xsd">
+    <mapped-superclass class="com.wonjjong.splearn.domain.AbstractEntity">
+        <attributes>
+            <id name="id">
+                <column name="id" />
+                <generated-value strategy="IDENTITY"/>
+            </id>
+        </attributes>
+    </mapped-superclass>
+
+    <entity class="com.wonjjong.splearn.domain.Member">
+        <table name="MEMBER">
+            <unique-constraint name="UK_MEMBER_EMAIL_ADDRESS">
+                <column-name>email_address</column-name>
+            </unique-constraint>
+        </table>
+        <attributes>
+            <!-- Embedded Email -->
+            <embedded name="email"/>
+
+            <basic name="nickname">
+                <column length="100" nullable="false"/>
+            </basic>
+
+            <basic name="passwordHash">
+                <column length="200" nullable="false"/>
+            </basic>
+
+            <basic name="status">
+                <enumerated>STRING</enumerated>
+                <column length="50" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
