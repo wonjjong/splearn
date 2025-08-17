@@ -1,4 +1,4 @@
-package com.wonjjong.splearn.domain;
+package com.wonjjong.splearn.domain.shared;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

@@ -1,10 +1,11 @@
-package com.wonjjong.splearn.application;
+package com.wonjjong.splearn.application.member;
 
-import com.wonjjong.splearn.application.provided.MemberFinder;
-import com.wonjjong.splearn.application.provided.MemberRegister;
-import com.wonjjong.splearn.application.required.EmailSender;
-import com.wonjjong.splearn.application.required.MemberRepository;
-import com.wonjjong.splearn.domain.*;
+import com.wonjjong.splearn.application.member.provided.MemberFinder;
+import com.wonjjong.splearn.application.member.provided.MemberRegister;
+import com.wonjjong.splearn.application.member.required.EmailSender;
+import com.wonjjong.splearn.application.member.required.MemberRepository;
+import com.wonjjong.splearn.domain.member.*;
+import com.wonjjong.splearn.domain.shared.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,8 @@ public class MemberModifyService implements MemberRegister{
         return member;
     }
 
+
+
     @Override
     public Member activate(Long memberId) {
         Member member = memberFinder.find(memberId);
@@ -42,6 +45,25 @@ public class MemberModifyService implements MemberRegister{
 
         return memberRepository.save(member);
     }
+
+    @Override
+    public Member deactivate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.deactivate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest memberInfoUpdateRequest) {
+        Member member = memberFinder.find(memberId);
+
+        member.updateInfo(memberInfoUpdateRequest);
+
+        return memberRepository.save(member);
+    }
+
 
     private void sendWelcomeEmail(Member member) {
         emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요.");

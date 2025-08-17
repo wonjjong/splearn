@@ -1,7 +1,8 @@
-package com.wonjjong.splearn.application.provided;
+package com.wonjjong.splearn.application.member.provided;
 
-import com.wonjjong.splearn.domain.Member;
-import com.wonjjong.splearn.domain.MemberRegisterRequest;
+import com.wonjjong.splearn.domain.member.Member;
+import com.wonjjong.splearn.domain.member.MemberInfoUpdateRequest;
+import com.wonjjong.splearn.domain.member.MemberRegisterRequest;
 import jakarta.validation.Valid;
 
 /*
@@ -13,4 +14,8 @@ public interface MemberRegister {
     Member register(@Valid MemberRegisterRequest registerRequest);
 
     Member activate(Long memberId);
+
+    Member deactivate(Long memberId);
+
+    Member updateInfo(Long memberId, @Valid MemberInfoUpdateRequest memberInfoUpdateRequest);
 }

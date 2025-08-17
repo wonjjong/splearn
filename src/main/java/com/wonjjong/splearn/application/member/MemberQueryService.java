@@ -1,8 +1,8 @@
-package com.wonjjong.splearn.application;
+package com.wonjjong.splearn.application.member;
 
-import com.wonjjong.splearn.application.provided.MemberFinder;
-import com.wonjjong.splearn.application.required.MemberRepository;
-import com.wonjjong.splearn.domain.Member;
+import com.wonjjong.splearn.application.member.provided.MemberFinder;
+import com.wonjjong.splearn.application.member.required.MemberRepository;
+import com.wonjjong.splearn.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.wonjjong.splearn.domain;
+package com.wonjjong.splearn.domain.member;
 
 public interface PasswordEncoder {
     String encode(String password);

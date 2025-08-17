@@ -1,11 +1,12 @@
-package com.wonjjong.splearn.domain;
+package com.wonjjong.splearn.domain.member;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.wonjjong.splearn.domain.MemberFixture.createMemberRegisterRequest;
-import static com.wonjjong.splearn.domain.MemberFixture.createPasswordEncoder;
+import static com.wonjjong.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
+import static com.wonjjong.splearn.domain.member.MemberFixture.createPasswordEncoder;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -21,20 +22,20 @@ class MemberTest {
     }
 
     @Test
-    void createMember() {
+    void registerMember() {
         assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
+        assertThat(member.getDetail().getRegisteredAt()).isNotNull();
     }
 
     @Test
     @DisplayName("activate")
     void activate() {
-        //given
+        assertThat(member.getDetail().getActivatedAt()).isNull();
 
-        //when
         member.activate();
 
-        //then
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
+        assertThat(member.getDetail().getActivatedAt()).isNotNull();
     }
 
     @Test
@@ -61,6 +62,8 @@ class MemberTest {
 
         //then
         assertThat(member.getStatus()).isEqualTo(MemberStatus.DEACTIVATED);
+        assertThat(member.getDetail().getDeactivatedAt()).isNotNull();
+
     }
 
     @Test
@@ -145,4 +148,21 @@ class MemberTest {
 
         //then
     }
+
+    @Test
+    @DisplayName("update info")
+    void updateInfo() {
+        //given
+        member.activate();
+
+        //when
+        var request = new MemberInfoUpdateRequest("leo", "wonjjong", "자기소개");
+        member.updateInfo(request);
+
+        //then
+        assertThat(member.getNickname()).isEqualTo(request.nickname());
+        assertThat(member.getDetail().getProfile().address()).isEqualTo(request.profileAddress());
+        assertThat(member.getDetail().getIntroduction()).isEqualTo(request.introduction());
+    }
+
 }

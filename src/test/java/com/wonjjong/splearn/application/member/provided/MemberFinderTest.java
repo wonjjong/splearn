@@ -1,8 +1,8 @@
-package com.wonjjong.splearn.application.provided;
+package com.wonjjong.splearn.application.member.provided;
 
 import com.wonjjong.splearn.SplearnTestConfiguration;
-import com.wonjjong.splearn.domain.Member;
-import com.wonjjong.splearn.domain.MemberFixture;
+import com.wonjjong.splearn.domain.member.Member;
+import com.wonjjong.splearn.domain.member.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

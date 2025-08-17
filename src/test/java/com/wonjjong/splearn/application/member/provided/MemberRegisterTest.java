@@ -1,7 +1,7 @@
-package com.wonjjong.splearn.application.provided;
+package com.wonjjong.splearn.application.member.provided;
 
 import com.wonjjong.splearn.SplearnTestConfiguration;
-import com.wonjjong.splearn.domain.*;
+import com.wonjjong.splearn.domain.member.*;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
@@ -44,15 +44,52 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
     @Test
     @DisplayName("activate")
     void activate() {
-        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
-        entityManager.flush();
-        entityManager.clear();
+        Member member = registerMember();
 
         member = memberRegister.activate(member.getId());
         entityManager.flush();
 
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
+        assertThat(member.getDetail().getActivatedAt()).isNotNull();
     }
+
+    @Test
+    @DisplayName("deactivate")
+    void deactivate() {
+        Member member = registerMember();
+
+        memberRegister.activate(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        member = memberRegister.deactivate(member.getId());
+
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.DEACTIVATED);
+        assertThat(member.getDetail().getDeactivatedAt()).isNotNull();
+    }
+
+    private Member registerMember() {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+        entityManager.flush();
+        entityManager.clear();
+        return member;
+    }
+
+    @Test
+    @DisplayName("updateInfo")
+    void updateInfo() {
+        Member member = registerMember();
+
+        memberRegister.activate(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        var request = new MemberInfoUpdateRequest("wonjjong", "wonjjong", "자기소개");
+        member = memberRegister.updateInfo(member.getId(), request);
+
+        assertThat(member.getDetail().getProfile().address()).isEqualTo("wonjjong");
+    }
+
 
     @Test
     @DisplayName("memberRegisterRequest fail")

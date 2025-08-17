@@ -1,6 +1,6 @@
-package com.wonjjong.splearn.application.required;
+package com.wonjjong.splearn.application.member.required;
 
-import com.wonjjong.splearn.domain.Email;
+import com.wonjjong.splearn.domain.shared.Email;
 
 /*
 * 이메일을 발송한다

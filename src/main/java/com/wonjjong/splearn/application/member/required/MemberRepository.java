@@ -1,7 +1,7 @@
-package com.wonjjong.splearn.application.required;
+package com.wonjjong.splearn.application.member.required;
 
-import com.wonjjong.splearn.domain.Email;
-import com.wonjjong.splearn.domain.Member;
+import com.wonjjong.splearn.domain.shared.Email;
+import com.wonjjong.splearn.domain.member.Member;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;

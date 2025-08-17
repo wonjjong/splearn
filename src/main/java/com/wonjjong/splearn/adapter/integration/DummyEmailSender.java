@@ -1,7 +1,7 @@
 package com.wonjjong.splearn.adapter.integration;
 
-import com.wonjjong.splearn.application.required.EmailSender;
-import com.wonjjong.splearn.domain.Email;
+import com.wonjjong.splearn.application.member.required.EmailSender;
+import com.wonjjong.splearn.domain.shared.Email;
 import org.springframework.context.annotation.Fallback;
 import org.springframework.stereotype.Component;
 

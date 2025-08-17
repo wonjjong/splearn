@@ -1,8 +1,8 @@
 package com.wonjjong.splearn;
 
-import com.wonjjong.splearn.application.required.EmailSender;
-import com.wonjjong.splearn.domain.MemberFixture;
-import com.wonjjong.splearn.domain.PasswordEncoder;
+import com.wonjjong.splearn.application.member.required.EmailSender;
+import com.wonjjong.splearn.domain.member.MemberFixture;
+import com.wonjjong.splearn.domain.member.PasswordEncoder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 

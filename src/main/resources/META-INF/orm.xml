@@ -12,10 +12,13 @@
         </attributes>
     </mapped-superclass>
 
-    <entity class="com.wonjjong.splearn.domain.Member">
-        <table name="MEMBER">
+    <entity class="com.wonjjong.splearn.domain.member.Member">
+        <table name="member">
             <unique-constraint name="UK_MEMBER_EMAIL_ADDRESS">
                 <column-name>email_address</column-name>
+            </unique-constraint>
+            <unique-constraint name="UK_MEMBER_DETAIL_ID">
+                <column-name>detail_id</column-name>
             </unique-constraint>
         </table>
         <attributes>
@@ -34,6 +37,45 @@
                 <enumerated>STRING</enumerated>
                 <column length="50" nullable="false"/>
             </basic>
+
+            <one-to-one name="detail" fetch="LAZY">
+                <cascade>
+                        <cascade-all/>
+                </cascade>
+            </one-to-one>
+        </attributes>
+    </entity>
+
+    <embeddable class="com.wonjjong.splearn.domain.member.Profile">
+        <attributes>
+            <basic name="address">
+                <column name="profile_address" length="20"/>
+            </basic>
+        </attributes>
+    </embeddable>
+
+    <entity class="com.wonjjong.splearn.domain.member.MemberDetail">
+        <table name="member_detail">
+            <unique-constraint name="UK_MEMBER_DETAIL_PROFILE_ADDRESS">
+                <column-name>profile_address</column-name>
+            </unique-constraint>
+        </table>
+
+        <attributes>
+            <embedded name="profile"/>
+
+            <basic name="introduction">
+                <column column-definition="TEXT"/>
+            </basic>
+
+            <basic name="registeredAt">
+                <column nullable="false"/>
+            </basic>
+
+            <basic name="activatedAt"/>
+
+            <basic name="deactivatedAt"/>
+
         </attributes>
     </entity>
 </entity-mappings>

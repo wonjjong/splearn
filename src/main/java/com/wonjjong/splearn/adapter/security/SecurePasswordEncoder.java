@@ -1,6 +1,6 @@
 package com.wonjjong.splearn.adapter.security;
 
-import com.wonjjong.splearn.domain.PasswordEncoder;
+import com.wonjjong.splearn.domain.member.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
